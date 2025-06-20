@@ -3,6 +3,7 @@ package com.shaik.school.schooldatabase.controller;
 import com.shaik.school.schooldatabase.Service.StudentService;
 import com.shaik.school.schooldatabase.model.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,25 +20,26 @@ public class StudentController {
         return studentService.saveStudent(student);
     }
 
-    @GetMapping
+    @GetMapping//("/api/students")
     public List<Student> getAllStudents(){
         return studentService.getAllStudent();
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public Student getStudentById(@PathVariable long id){
         return studentService.getStudentById(id);
     }
 
-    @PutMapping
-    public Student updateStudent(@RequestBody long id, @RequestBody Student student){
-        return studentService.updateStudent(id, student);
+    @PutMapping("/{id}")
+    public ResponseEntity<Student> updateStudent(@PathVariable long id, @RequestBody Student student){
+        Student studentUpdated = studentService.updateStudent(id, student);
+        return ResponseEntity.ok(studentUpdated);
     }
 
-    @DeleteMapping
-    public String deleteStudentById(@PathVariable long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteStudentById(@PathVariable long id){
         studentService.deleteStudent(id);
-        return "Student deleted Successfully";
+        return ResponseEntity.ok("Student deleted Successfully");
 
 
     }

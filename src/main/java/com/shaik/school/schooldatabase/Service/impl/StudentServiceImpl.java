@@ -33,12 +33,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student updateStudent(Long id, Student updatedStudent){
-        return studentRepository.findById(id).map(student -> {
-            student.setName(updatedStudent.getName());
-            student.setEmail(updatedStudent.getEmail());
-            student.setAge(updatedStudent.getAge());
-            return studentRepository.save(student);
-        }).orElse(null);
+       Student student = studentRepository.findById(id)
+               .orElseThrow(() -> new RuntimeException("Student not found"));
+
+       student.setName(updatedStudent.getName());
+       student.setEmail(updatedStudent.getEmail());
+       student.setAge(updatedStudent.getAge());
+       return studentRepository.save(student);
     }
 
     @Override
